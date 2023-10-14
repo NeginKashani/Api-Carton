@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle, rgba(63, 94, 251, 1) 0%, rgba(67, 252, 206, 0.9192051820728291) 35%, rgba(70, 230, 252, 1) 100%);
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        h1 {
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            width: 100%;
+            margin: 50px 0;
+            color: rgb(0, 0, 0);
+            text-transform: capitalize;
+        }
+
+        label {
+            font-size: large;
+            color: #ffffff;
+            margin-bottom: 10px;
+            text-transform: capitalize;
+
+        }
+
+        #list {
+            width: 40%;
+            padding: 20px;
+            border: 2px solid rgb(98, 75, 75);
+            box-shadow: 2px 2px 10px gray;
+            margin: 50px auto;
+            border-radius: 10px;
+            color: black;
+        }
+
+        .art {
+            width: 100%;
+            height: 100px;
+            border-bottom: 1px solid rgb(159, 151, 151);
+            padding: 10px;
+            display: flex;
+
+            >figure {
+                width: 50%;
+
+                >img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            >div {
+                width: 80%;
+                padding-left: 20px;
+                color: #040625;
+
+            }
+        }
+
+        button {
+            width: 10%;
+            height: 40px;
+            margin-top: 30px;
+            border-radius: 8px;
+            background-color: #73747b;
+            color: rgb(255, 255, 255);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+
+        input {
+            width: 600px;
+            height: 40px;
+            border-radius: 10px;
+            margin: 20px;
+            padding: 20px;
+            font-size: 20px;
+        }
+
+        #name {
+            color: black;
+            font-size: 28px;
+            text-shadow: 2px 2px rgb(171, 178, 240);
+            font-weight: 900;
+
+        }
+
+        #name1 {
+            color: rgb(51, 47, 47);
+            font-size: 22px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Cartons Information</h1>
+    <label for="" id="name1">Enter Cartons Name:</label>
+    <input type="text" id="searchName" placeholder="Search Mario, Pokemon, Pikmin, Mii...">
+    <label for="" id="name"><em>For example: Mario,Pokemon,Pikmin,Mii...</em></label>
+    <button onclick="setData()">Click</button>
+    <div id="list"></div>
+    <script>
+        function setData() {
+            document.getElementById('list').innerHTML = ''
+            let search = document.getElementById('searchName').value
+
+            fetch('https://www.amiiboapi.com/api/amiibo/?name=' + search)
+                .then(res => res.json())
+                .then(val => {
+                    val.amiibo.map((item) => {
+                        let art = document.createElement('article')
+                        art.classList.add('art')
+                        art.innerHTML = `
+                        <div>
+                              <h2>${item.gameSeries}</h2>
+                              <h4>${item.name}</h4>
+                              <h5>${item.release.na}</h5>
+                        </div>
+                            <figure><img  src='${item.image}' /></figure>
+                        `
+                        document.getElementById('list').appendChild(art)
+                    })
+                })
+        }
+    </script>
+</body>
+
+</html>
